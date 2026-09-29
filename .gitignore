@@ -1,0 +1,11 @@
+# Build output
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+
+# Common build dirs
+build/
+bin/

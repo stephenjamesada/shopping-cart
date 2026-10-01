@@ -1,3 +1,4 @@
+// TODO: add non-numeric error handling for price
 // TODO: add multiple items with different amounts and track them
 
 #include <stdio.h>
@@ -5,13 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_NAME_LEN 64
-
 typedef struct {
-    char name[MAX_NAME_LEN];
+    char name[64];
     float price;
     char currency[4];
-    int count;
     char currencies[4][4];
 } Product;
 
@@ -25,10 +23,12 @@ int main() {
         }
     };
 
+    Product cart[10];
     bool running = true;
     int c;
+    int quantity;
 
-    while (running) {
+    while (running) { 
         printf("1.\tUSD\n");
         printf("2.\tEUR\n");
         printf("3.\tGBP\n");
@@ -59,37 +59,53 @@ int main() {
                 break;
         }
 
-        printf("What would you like to buy?: ");
+        printf("How many items are you going to buy? (max 10): ");
 
-        // Finds newline, changes to null terminator
-        if (fgets(product.name, sizeof(product.name), stdin) == NULL) {
-            printf("Input stream failure\n");
-        } else {
-            product.name[strcspn(product.name, "\n")] = '\0';
-
-            if (strcmp(product.name, "q") == 0) {
-                running = false;
-                continue;
-            }
-        }
-
-        printf("How much does it cost?: ");
-
-        if (scanf("%f", &product.price) != 1) {
+        if (scanf("%d", &quantity) != 1) {
             printf("Invalid input\n");
+            continue;
         } else {
-            while ((c = getchar()) != '\n' && c != EOF) {
-                // Discard remaining input (condition does the work)
+            while((c = getchar()) != '\n' && c != EOF) {
+                // Discard remaining input
             }
         }
 
-        printf("%s: %.2f %c\n", product.name, product.price, product.currency);
-        product.count++;
+        for (int i = 0; i < quantity; i++) {
+            strcpy(cart[i].currency, product.currency);
 
-        if (product.count == 1) {
-            running = false;
-            continue;
+            printf("What would you like to buy?: ");
+
+            if (fgets(cart[i].name, sizeof(cart[i].name), stdin) == NULL) {
+                printf("Input stream failure\n");
+            } else {
+                cart[i].name[strcspn(cart[i].name, "\n")] = '\0';
+
+                if (strcmp(cart[i].name, "q") == 0) {
+                    running = false;
+                    continue;
+                }
+            } 
+
+            printf("How much does it cost?: ");
+
+            if (scanf("%f", &cart[i].price) != 1) {
+                printf("Invalid input\n");
+            } else {
+                while ((c = getchar()) != '\n' && c != EOF) {
+                    // Discard remaining input
+                }
+            }
         }
+        
+        printf("\n------- Cart Summary -------\n");
+        for (int i = 0; i < quantity; i++) {
+            printf("\t[%d] %s: %.2f %s\n",
+                i + 1,
+                cart[i].name,
+                cart[i].price,
+                cart[i].currency);
+        }
+        break;
     }
 
     return EXIT_SUCCESS;

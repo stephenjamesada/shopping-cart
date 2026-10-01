@@ -1,8 +1,13 @@
 CC = gcc
-CFLAGS = -std=c23 -Wall -Wextra -Wpedantic -g
+CFLAGS = -std=c2x -Wall -Wextra -Wpedantic -g
+SANITIZE_FLAGS = -fsanitize=address,undefined
+TARGET = cart
 
-cart: cart.c
+$(TARGET): cart.c
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm -f cart
+	rm -f $(TARGET)
+
+sanitize: CFLAGS += $(SANITIZE_FLAGS)
+sanitize: clean $(TARGET) ./$(TARGET)

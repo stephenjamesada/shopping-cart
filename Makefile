@@ -1,5 +1,8 @@
+CC = gcc
+CFLAGS = -std=c23 -Wall -Wextra -Wpedantic -g
+
 cart: cart.c
-	gcc cart.c -o cart
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	rm -f cart

@@ -5,6 +5,7 @@ help() {
     printf 'clean         => make clean\n'
     printf 'sanitize      => make sanitize\n'
     printf 'exit, quit, q => quit program\n'
+    printf 'clear         => clear screen\n'
     printf 'help          => print this message\n'
 }
 
@@ -19,6 +20,7 @@ main() {
             build) make ;;
             clean) make clean ;;
             sanitize) make sanitize ;;
+            clear) clear ;;
             exit|quit|q) clear
                          break ;;
             help) help ;;
